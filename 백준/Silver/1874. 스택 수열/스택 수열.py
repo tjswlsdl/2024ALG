@@ -1,29 +1,34 @@
 import sys
+#import numpy as np
 input = sys.stdin.readline
+
+
+
 N = int(input())
-numlist = [i for i in range(1,N+1)]
-count = 0
-stack = [-1]   # bottom
-res = []
-Fesability = True
-for i in range(N):
-    iscomplete = False
-    need = int(input())
-    while not iscomplete:
-        if stack[-1] == need:
-            res.append('-')
-            del stack[-1]
-            iscomplete = True
-        elif need < stack[-1]: # Can't make array
-            Fesability = False
-            break
-        else:
-            while need != stack[-1]:
-                stack.append(numlist[count])
-                res.append('+')
-                count += 1
-if Fesability:
-    for s in res:
-        print(s)
-else:
+#answer = []
+#num_list = [ i for i in range(1,N+1)]
+stack = []
+op = []
+cnt = 1
+temp = True
+for _ in range(N):
+    num = int(input())
+    while cnt <= num:
+        stack.append(cnt)
+        cnt += 1
+        op.append('+')
+    
+    
+    if stack[-1] >= num :
+        stack.pop()
+        op.append('-')
+    
+    else :
+        temp = False
+        break
+
+if temp == False :
     print('NO')
+else:
+    for i in op:
+        print(i)
