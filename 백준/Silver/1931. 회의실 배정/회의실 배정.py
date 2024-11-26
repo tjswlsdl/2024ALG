@@ -1,20 +1,29 @@
 import sys
+input = sys.stdin.readline
 
-N = int(sys.stdin.readline())
+N = int(input())  # 회의의 수
+meetings = []  # 회의 시간 리스트
+result = 0  # 정답
 
-time = [[0]*2 for _ in range(N)]
 for i in range(N):
-    s, e = map(int, sys.stdin.readline().split())
-    time[i][0] = s
-    time[i][1] = e
+    meetings.append(list(map(int, input().split())))
 
-time.sort(key = lambda x: (x[1], x[0]))
+# 회의를 시작시간을 기준으로 오름차순 정렬
+meetings.sort()
 
-cnt = 1
-end_time = time[0][1]
+# 다른 회의들과 비교할 후보 회의
+temp = meetings[0]
+
 for i in range(1, N):
-    if time[i][0] >= end_time:
-        cnt += 1
-        end_time = time[i][1]
+    # 후보 회의가 종료된 이후에 다음 회의시간이 주어진다면? 회의실을 배정하고 다음 회의를 후보 회의로 바꿈
+    if temp[1] <= meetings[i][0]:
+        result += 1
+        temp = meetings[i]
+    # 후보 회의의 종료시간이 다음 회의의 종료시간 보다 길다면? 다음 회의를 후보 회의로 바꿈
+    elif temp[1] > meetings[i][1]:
+        temp = meetings[i]
 
-print(cnt)
+# 마지막 회의를 추가
+result += 1
+
+print(result)
