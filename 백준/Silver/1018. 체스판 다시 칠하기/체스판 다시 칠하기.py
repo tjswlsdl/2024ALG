@@ -1,27 +1,40 @@
-n,m=map(int,input().split())
+import sys
+input = sys.stdin.readline
 
-mtr=[]
-cnt=[]
-for i in range(n):
-    mtr.append(input())
-    
-for a in range(n-7):
-    for b in range(m-7):#8*8로 자르기 위해, -7해준다
-        w_index=0 #흰색으로 시작
-        b_index=0 #검은색으로 시작
-        for i in range(a,a+8):#시작지점
-            for j in range(b,b+8):#시작지점
-                if (i+j)%2==0:#짝수인 경우
-                    if mtr[i][j]!='W':#W가 아니면, 즉 B이면
-                        w_index+=1#W로 칠하는 갯수
-                    else:#W일 때
-                        b_index+=1#B로 칠하는 갯수
-                else:#홀수인 경우
-                    if mtr[i][j]!='W':#W가 아니면, 즉 B이면
-                        b_index+=1#B로 칠하는 갯수
+n,m = map(int, input().split())
+
+
+# 체스판 만들기
+chess = []
+res = []
+
+for _ in range(n):
+    chess.append(input().rstrip())
+        
+
+
+# 체스판 검사하기
+## 일단 체스판 잘라준다 7을 빼주고 돌려야 8*8 으로 자를수 있다.
+## ex) m,n = 11 -> 0~7 / 1~8 / 2~9 / 3~10 이렇게 4번 돌아간다.
+for x in range(n-7):
+    for y in range(m-7): 
+        idx_w = 0
+        idx_b = 0
+        for i in range(x, x+8):
+            for j in range(y, y+8):
+## 이제 체스판이 두종류(왼쪽 위가 하양 or 검정) 인 것을 이용하자
+                if (i+j)%2 == 0: # 짝수일때 
+                    if chess[i][j] != 'W' : # 시작점이 B이면
+                        idx_w += 1
                     else:
-                        w_index+=1#W로 칠하는 갯수
-                        
-        cnt.append(w_index) #W로 시작할 때 경우의 수
-        cnt.append(b_index) #B로 시작할 때 경우의 수
-print(min(cnt))
+                        idx_b += 1
+                else : # 홀수일때
+                    if chess[i][j] != 'W':
+                        idx_b += 1
+                    else:
+                        idx_w += 1
+        res.append(idx_w)
+        res.append(idx_b)
+print(min(res))
+
+
